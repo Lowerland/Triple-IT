@@ -35,7 +35,7 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 
 	ArrayList<Employees> ArrayListEmployees;
 	int Resource;
-	Context context;
+	//Context context;
 	LayoutInflater vi;
 
 	public EmployeeAdapter(Context context, int resource,
@@ -44,7 +44,7 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 
 		ArrayListEmployees = objects;
 		Resource = resource;
-		this.context = context;
+		//this.context = context;
 
 		vi = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -54,10 +54,10 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
-		InfoHolder holder;
+		ViewHolder holder;
 		if (convertView == null) {
 			convertView = vi.inflate(Resource, null);
-			holder = new InfoHolder();
+			holder = new ViewHolder();
 
 			holder.imageview = (ImageView) convertView.findViewById(R.id.photo);
 			holder.firstname = (TextView) convertView.findViewById(R.id.firstname);
@@ -67,16 +67,17 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 			convertView.setTag(holder);
 			
 		} else {
-			holder = (InfoHolder) convertView.getTag();
+			holder = (ViewHolder) convertView.getTag();
 		}
 		
 		//holder.imageview.setImageResource(resId);
 
 		if (ArrayListEmployees.get(position).getPhotourl() == "null") {
 			holder.imageview.setImageResource(R.drawable.no_photo);
-			//new DownloadImageTask(holder.imageview).execute("http://android.json.test/photos/" + ArrayListEmployees.get(position).getPhotourl());
+			
 		} else {
-			new DownloadImageTask(holder.imageview).execute("http://android.json.test/photos/" + ArrayListEmployees.get(position).getPhotourl());
+			//new DownloadImageTask(holder.imageview).execute("http://android.json.test/photos/" + ArrayListEmployees.get(position).getPhotourl());
+			new DownloadImageTask(holder.imageview).execute("http://www.westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl());
 		}
 		
 
@@ -87,7 +88,7 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 		return convertView;
 	}
 
-	static class InfoHolder {
+	static class ViewHolder {
 		public ImageView imageview;
 		public TextView firstname;
 		public TextView lastname;

@@ -23,7 +23,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -31,9 +31,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity {
 
@@ -49,48 +54,111 @@ public class MainActivity extends Activity {
 		androidlist = (ListView) findViewById(R.id.androidlist);
 		employeeList = new ArrayList<Employees>();
 
-		new EmployeeAsyncTask().execute("http://android.json.test/");
+		// new EmployeeAsyncTask().execute("http://android.json.test/");
+		new EmployeeAsyncTask()
+				.execute("http://www.westfrieslandwifi.nl/tripletest/");
+		ListView listview = (ListView) findViewById(R.id.androidlist);
+		adapter = new EmployeeAdapter(getApplicationContext(), R.layout.row,employeeList);
+
+		listview.setAdapter(adapter);
+
+		listview.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				Toast.makeText(getApplicationContext(), "blaa",
+						Toast.LENGTH_LONG).show();
+			}
+		});
 
 	}
 
 	public class EmployeeAsyncTask extends AsyncTask<String, Void, Boolean> {
 
+		ProgressDialog dialog;
+
 		@Override
-		protected Boolean doInBackground(String... params) {
-		try {
-				HttpClient client = new DefaultHttpClient();
-				HttpPost post = new HttpPost(params[0]);
-				HttpResponse response = client.execute(post);
+		protected void onPreExecute() {
+			super.onPreExecute();
+			dialog = new ProgressDialog(MainActivity.this);
+			dialog.setMessage("Loading, please wait");
+			dialog.setTitle("Connecting server");
+			dialog.show();
+			dialog.setCancelable(false);
+		}
+
+		@Override
+		protected Boolean doInBackground(String... urls) {
+			try {
+				
+				//------------------>>
+				HttpGet httppost = new HttpGet(urls[0]);
+				HttpClient httpclient = new DefaultHttpClient();
+				HttpResponse response = httpclient.execute(httppost);
+				
+//				HttpClient client = new DefaultHttpClient();
+//				HttpPost post = new HttpPost(params[0]);
+//				HttpResponse response = client.execute(post);
 
 				int status = response.getStatusLine().getStatusCode();
-				if (status == 200){
-					
+				
+				if (status == 200) {
+
 					HttpEntity entity = response.getEntity();
 					String data = EntityUtils.toString(entity);
-					
-					
+
 					JSONObject jObj = new JSONObject(data);
-					//JSONArray jArray = jObj.getJSONArray("Android");
-					JSONArray jArray = jObj.getJSONArray("iOS");
-					//JSONArray jArray = jObj.getJSONArray("Windows");
-					
-					
-					for(int i=0; i<jArray.length(); i++){
-						Employees employee = new Employees();
-						
+					JSONArray jArray = jObj.getJSONArray("Android");
+					JSONArray jArray2 = jObj.getJSONArray("iOS");
+					JSONArray jArray3 = jObj.getJSONArray("Windows");
+
+					for (int i = 0; i < jArray.length(); i++) {						
 						JSONObject jRealObject = jArray.getJSONObject(i);
 						
+						Employees employee = new Employees();
+
+
 						employee.setFirstname(jRealObject.getString("firstName"));
 						employee.setLastname(jRealObject.getString("lastName"));
 						employee.setEmailaddress(jRealObject.getString("emailAddress"));
 						employee.setPhotourl(jRealObject.getString("photoUrl"));
+
+						employeeList.add(employee);
+
+					}
+					for (int i = 0; i < jArray2.length(); i++) {						
+						JSONObject jRealObject = jArray2.getJSONObject(i);
 						
+						Employees employee = new Employees();
+
+
+						employee.setFirstname(jRealObject.getString("firstName"));
+						employee.setLastname(jRealObject.getString("lastName"));
+						employee.setEmailaddress(jRealObject.getString("emailAddress"));
+						employee.setPhotourl(jRealObject.getString("photoUrl"));
+
+						employeeList.add(employee);
+
+					}
+					for (int i = 0; i < jArray3.length(); i++) {						
+						JSONObject jRealObject = jArray3.getJSONObject(i);
+						
+						Employees employee = new Employees();
+
+
+						employee.setFirstname(jRealObject.getString("firstName"));
+						employee.setLastname(jRealObject.getString("lastName"));
+						employee.setEmailaddress(jRealObject.getString("emailAddress"));
+						employee.setPhotourl(jRealObject.getString("photoUrl"));
+
 						employeeList.add(employee);
 
 					}
 					return true;
 				}
-				
+
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -105,37 +173,27 @@ public class MainActivity extends Activity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
+
 			
+			adapter.notifyDataSetChanged();
+			dialog.cancel();
 			if(result == false){
-				//show a msg that data was not parsed
-			} else {
-				EmployeeAdapter adapter = new EmployeeAdapter(getApplicationContext(), R.layout.row, employeeList);
-				androidlist.setAdapter(adapter);
+				Toast.makeText(getApplicationContext(), "Unable to fetch data from server", Toast.LENGTH_LONG).show();
+				
 			}
+
+//			if (result == false) {
+//				// show a msg that data was not parsed
+//			} else {
+//
+//				EmployeeAdapter adapter = new EmployeeAdapter(
+//						getApplicationContext(), R.layout.row, employeeList);
+//				adapter.notifyDataSetChanged();
+//				androidlist.setAdapter(adapter);
+//
+//			}
 
 		}
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
