@@ -35,16 +35,15 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 
 	ArrayList<Employees> ArrayListEmployees;
 	int Resource;
-	//Context context;
+	// Context context;
 	LayoutInflater vi;
 
-	public EmployeeAdapter(Context context, int resource,
-			ArrayList<Employees> objects) {
+	public EmployeeAdapter(Context context, int resource, ArrayList<Employees> objects) {
 		super(context, resource, objects);
 
 		ArrayListEmployees = objects;
 		Resource = resource;
-		//this.context = context;
+		// this.context = context;
 
 		vi = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -53,48 +52,56 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
+
 		ViewHolder holder;
 		if (convertView == null) {
 			convertView = vi.inflate(Resource, null);
 			holder = new ViewHolder();
 
 			holder.imageview = (ImageView) convertView.findViewById(R.id.photo);
-			holder.firstname = (TextView) convertView.findViewById(R.id.firstname);
-			holder.lastname = (TextView) convertView.findViewById(R.id.lastname);
-			holder.emailaddress = (TextView) convertView.findViewById(R.id.emailaddress);
+			holder.name = (TextView) convertView.findViewById(R.id.name);
+			//holder.firstname = (TextView) convertView.findViewById(R.id.firstname);
+			//holder.lastname = (TextView) convertView.findViewById(R.id.lastname);
+			// holder.emailaddress = (TextView)
+			// convertView.findViewById(R.id.emailaddress);
 
 			convertView.setTag(holder);
-			
+
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		
-		//holder.imageview.setImageResource(resId);
+
+		// holder.imageview.setImageResource(resId);
 
 		if (ArrayListEmployees.get(position).getPhotourl() == "null") {
 			holder.imageview.setImageResource(R.drawable.no_photo);
-			
-		} else {
-			//new DownloadImageTask(holder.imageview).execute("http://android.json.test/photos/" + ArrayListEmployees.get(position).getPhotourl());
-			new DownloadImageTask(holder.imageview).execute("http://www.westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl());
-		}
-		
 
-		holder.firstname.setText(ArrayListEmployees.get(position).getFirstname());
-		holder.lastname.setText(ArrayListEmployees.get(position).getLastname());
-		holder.emailaddress.setText(ArrayListEmployees.get(position).getEmailaddress());
+		} else {
+			new DownloadImageTask(holder.imageview)
+					.execute("http://android.json.test/photos/"
+							+ ArrayListEmployees.get(position).getPhotourl());
+			// new
+			// DownloadImageTask(holder.imageview).execute("http://www.westfrieslandwifi.nl/tripletest/photos/"
+			// + ArrayListEmployees.get(position).getPhotourl());
+		}
+
+		holder.name.setText(ArrayListEmployees.get(position).getFirstname() + " " + ArrayListEmployees.get(position).getLastname());
+//		holder.firstname.setText(ArrayListEmployees.get(position)
+//				.getFirstname());
+//		holder.lastname.setText(ArrayListEmployees.get(position).getLastname());
+		// holder.emailaddress.setText(ArrayListEmployees.get(position).getEmailaddress());
 
 		return convertView;
 	}
 
 	static class ViewHolder {
 		public ImageView imageview;
-		public TextView firstname;
-		public TextView lastname;
-		public TextView emailaddress;
+		public TextView name;
+		//public TextView firstname;
+		//public TextView lastname;
+		// public TextView emailaddress;
 	}
-	
+
 	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 		ImageView bmImage;
 

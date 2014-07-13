@@ -36,37 +36,42 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity {
 
-	ListView androidlist;
+	GridView androidlist;
 	EmployeeAdapter adapter;
 	ArrayList<Employees> employeeList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.main);
 
-		androidlist = (ListView) findViewById(R.id.androidlist);
+		androidlist = (GridView) findViewById(R.id.ANDROIDLIST);
+
 		employeeList = new ArrayList<Employees>();
 
-		// new EmployeeAsyncTask().execute("http://android.json.test/");
-		new EmployeeAsyncTask()
-				.execute("http://www.westfrieslandwifi.nl/tripletest/");
-		ListView listview = (ListView) findViewById(R.id.androidlist);
-		adapter = new EmployeeAdapter(getApplicationContext(), R.layout.row,employeeList);
+		new EmployeeAsyncTask().execute("http://android.json.test/");
+		// new
+		// EmployeeAsyncTask().execute("http://www.westfrieslandwifi.nl/tripletest/");
+		// GridView listview = (GridView) findViewById(R.id.ANDROIDLIST);
+		ExpandableHeightGridView gridView = (ExpandableHeightGridView) findViewById(R.id.ANDROIDLIST);
+		gridView.setAdapter(adapter);
+		gridView.setExpanded(true);
 
-		listview.setAdapter(adapter);
+		adapter = new EmployeeAdapter(getApplicationContext(), R.layout.row2,
+				employeeList);
 
-		listview.setOnItemClickListener(new OnItemClickListener() {
+		gridView.setAdapter(adapter);
+
+		gridView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				// TODO Auto-generated method stub
 				Toast.makeText(getApplicationContext(), "blaa",
 						Toast.LENGTH_LONG).show();
@@ -86,24 +91,20 @@ public class MainActivity extends Activity {
 			dialog.setMessage("Loading, please wait");
 			dialog.setTitle("Connecting server");
 			dialog.show();
-			dialog.setCancelable(false);
+			dialog.setCancelable(true);
 		}
 
 		@Override
 		protected Boolean doInBackground(String... urls) {
 			try {
-				
-				//------------------>>
+
+				// ------------------>>
 				HttpGet httppost = new HttpGet(urls[0]);
 				HttpClient httpclient = new DefaultHttpClient();
 				HttpResponse response = httpclient.execute(httppost);
-				
-//				HttpClient client = new DefaultHttpClient();
-//				HttpPost post = new HttpPost(params[0]);
-//				HttpResponse response = client.execute(post);
 
 				int status = response.getStatusLine().getStatusCode();
-				
+
 				if (status == 200) {
 
 					HttpEntity entity = response.getEntity();
@@ -114,48 +115,49 @@ public class MainActivity extends Activity {
 					JSONArray jArray2 = jObj.getJSONArray("iOS");
 					JSONArray jArray3 = jObj.getJSONArray("Windows");
 
-					for (int i = 0; i < jArray.length(); i++) {						
+					for (int i = 0; i < jArray.length(); i++) {
 						JSONObject jRealObject = jArray.getJSONObject(i);
-						
+
 						Employees employee = new Employees();
 
-
-						employee.setFirstname(jRealObject.getString("firstName"));
+						employee.setFirstname(jRealObject
+								.getString("firstName"));
 						employee.setLastname(jRealObject.getString("lastName"));
-						employee.setEmailaddress(jRealObject.getString("emailAddress"));
+						employee.setEmailaddress(jRealObject
+								.getString("emailAddress"));
 						employee.setPhotourl(jRealObject.getString("photoUrl"));
 
 						employeeList.add(employee);
 
 					}
-					for (int i = 0; i < jArray2.length(); i++) {						
-						JSONObject jRealObject = jArray2.getJSONObject(i);
-						
-						Employees employee = new Employees();
-
-
-						employee.setFirstname(jRealObject.getString("firstName"));
-						employee.setLastname(jRealObject.getString("lastName"));
-						employee.setEmailaddress(jRealObject.getString("emailAddress"));
-						employee.setPhotourl(jRealObject.getString("photoUrl"));
-
-						employeeList.add(employee);
-
-					}
-					for (int i = 0; i < jArray3.length(); i++) {						
-						JSONObject jRealObject = jArray3.getJSONObject(i);
-						
-						Employees employee = new Employees();
-
-
-						employee.setFirstname(jRealObject.getString("firstName"));
-						employee.setLastname(jRealObject.getString("lastName"));
-						employee.setEmailaddress(jRealObject.getString("emailAddress"));
-						employee.setPhotourl(jRealObject.getString("photoUrl"));
-
-						employeeList.add(employee);
-
-					}
+					// for (int i = 0; i < jArray2.length(); i++) {
+					// JSONObject jRealObject = jArray2.getJSONObject(i);
+					//
+					// Employees employee = new Employees();
+					//
+					//
+					// employee.setFirstname(jRealObject.getString("firstName"));
+					// employee.setLastname(jRealObject.getString("lastName"));
+					// employee.setEmailaddress(jRealObject.getString("emailAddress"));
+					// employee.setPhotourl(jRealObject.getString("photoUrl"));
+					//
+					// employeeList.add(employee);
+					//
+					// }
+					// for (int i = 0; i < jArray3.length(); i++) {
+					// JSONObject jRealObject = jArray3.getJSONObject(i);
+					//
+					// Employees employee = new Employees();
+					//
+					//
+					// employee.setFirstname(jRealObject.getString("firstName"));
+					// employee.setLastname(jRealObject.getString("lastName"));
+					// employee.setEmailaddress(jRealObject.getString("emailAddress"));
+					// employee.setPhotourl(jRealObject.getString("photoUrl"));
+					//
+					// employeeList.add(employee);
+					//
+					// }
 					return true;
 				}
 
@@ -174,25 +176,14 @@ public class MainActivity extends Activity {
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 
-			
 			adapter.notifyDataSetChanged();
 			dialog.cancel();
-			if(result == false){
-				Toast.makeText(getApplicationContext(), "Unable to fetch data from server", Toast.LENGTH_LONG).show();
-				
+			if (result == false) {
+				Toast.makeText(getApplicationContext(),
+						"Unable to fetch data from server", Toast.LENGTH_LONG)
+						.show();
+
 			}
-
-//			if (result == false) {
-//				// show a msg that data was not parsed
-//			} else {
-//
-//				EmployeeAdapter adapter = new EmployeeAdapter(
-//						getApplicationContext(), R.layout.row, employeeList);
-//				adapter.notifyDataSetChanged();
-//				androidlist.setAdapter(adapter);
-//
-//			}
-
 		}
 	}
 

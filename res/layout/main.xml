@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/head"
+            android:layout_width="fill_parent"
+            android:layout_height="209dp"
+            android:layout_marginTop="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/head" />
+
+        <ImageView
+            android:id="@+id/androidLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/head"
+            android:layout_marginTop="-4dp"
+            android:layout_marginLeft="16dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/android" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/head"
+            android:layout_toRightOf="@id/androidLogo"
+            android:layout_marginTop="-2dp"
+            android:layout_marginLeft="8dp"
+            android:text="Android Developers"
+            android:textColor="#111111" 
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <nl.triple_it.assignment.ExpandableHeightGridView
+            android:id="@+id/ANDROIDLIST"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/androidLogo"
+            android:layout_marginTop="4dp"
+            android:numColumns="2"
+            tools:listitem="@layout/row2" />
+
+        <ImageView
+            android:id="@+id/iosLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ANDROIDLIST"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ios" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ANDROIDLIST"
+            android:layout_toRightOf="@id/iosLogo"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="8dp"
+            android:text="iOS Developers"
+            android:textColor="#111111" 
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </RelativeLayout>
+
+</ScrollView>
