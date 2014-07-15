@@ -58,8 +58,7 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 			// new
 			// DownloadImageTask(holder.imageview).execute("http://nmouthaan.triple-it.nl/assignment/photos/"
 			// + ArrayListEmployees.get(position).getPhotourl());
-			new DownloadImageTask(holder.imageview)
-					.execute("http://www.westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl());
+			new DownloadImageTask(holder.imageview).execute("http://www.westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl());
 		}
 		// Set name
 		holder.name.setText(ArrayListEmployees.get(position).getFirstname()	+ " " + ArrayListEmployees.get(position).getLastname());
