@@ -1,19 +1,3 @@
-/*
- *  Copyright 2013-2014 Jeroen Gorter <Lowerland@hotmail.com>
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- */
-
 package nl.triple_it.assignment;
 
 import java.io.InputStream;
@@ -35,7 +19,6 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 
 	ArrayList<Employees> ArrayListEmployees;
 	int Resource;
-	// Context context;
 	LayoutInflater vi;
 
 	public EmployeeAdapter(Context context, int resource, ArrayList<Employees> objects) {
@@ -43,87 +26,81 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 
 		ArrayListEmployees = objects;
 		Resource = resource;
-		// this.context = context;
-
-		vi = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+		vi = (LayoutInflater) context.
+				getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
+		// getting the first list item
 		ViewHolder holder;
+
 		if (convertView == null) {
 			convertView = vi.inflate(Resource, null);
-			holder = new ViewHolder();
 
+			holder = new ViewHolder();
 			holder.imageview = (ImageView) convertView.findViewById(R.id.photo);
 			holder.name = (TextView) convertView.findViewById(R.id.name);
-			//holder.firstname = (TextView) convertView.findViewById(R.id.firstname);
-			//holder.lastname = (TextView) convertView.findViewById(R.id.lastname);
-			// holder.emailaddress = (TextView)
-			// convertView.findViewById(R.id.emailaddress);
+			holder.emailaddress = (TextView) convertView.findViewById(R.id.emailaddress);
 
 			convertView.setTag(holder);
-
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		// holder.imageview.setImageResource(resId);
-
+		// When no photo exist set a default one
 		if (ArrayListEmployees.get(position).getPhotourl() == "null") {
 			holder.imageview.setImageResource(R.drawable.no_photo);
 
 		} else {
-			new DownloadImageTask(holder.imageview)
-					.execute("http://android.json.test/photos/"
-							+ ArrayListEmployees.get(position).getPhotourl());
+			// TODO
 			// new
-			// DownloadImageTask(holder.imageview).execute("http://www.westfrieslandwifi.nl/tripletest/photos/"
+			// DownloadImageTask(holder.imageview).execute("http://nmouthaan.triple-it.nl/assignment/photos/"
 			// + ArrayListEmployees.get(position).getPhotourl());
+			new DownloadImageTask(holder.imageview)
+					.execute("http://www.westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl());
 		}
+		// Set name
+		holder.name.setText(ArrayListEmployees.get(position).getFirstname()	+ " " + ArrayListEmployees.get(position).getLastname());
 
-		holder.name.setText(ArrayListEmployees.get(position).getFirstname() + " " + ArrayListEmployees.get(position).getLastname());
-//		holder.firstname.setText(ArrayListEmployees.get(position)
-//				.getFirstname());
-//		holder.lastname.setText(ArrayListEmployees.get(position).getLastname());
-		// holder.emailaddress.setText(ArrayListEmployees.get(position).getEmailaddress());
-
+		// Set emailadress if we are in detail view
+		if (holder.emailaddress == null) {
+		} else {
+			holder.emailaddress.setText(ArrayListEmployees.get(position).getEmailaddress());
+		}
 		return convertView;
 	}
 
 	static class ViewHolder {
 		public ImageView imageview;
 		public TextView name;
-		//public TextView firstname;
-		//public TextView lastname;
-		// public TextView emailaddress;
+		public TextView emailaddress;
 	}
 
+	// Photo downloader
 	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-		ImageView bmImage;
+		ImageView fetchImage;
 
-		public DownloadImageTask(ImageView bmImage) {
-			this.bmImage = bmImage;
+		public DownloadImageTask(ImageView fetchImage) {
+			this.fetchImage = fetchImage;
 		}
 
 		protected Bitmap doInBackground(String... urls) {
 			String urldisplay = urls[0];
-			Bitmap mIcon11 = null;
+			Bitmap fetchobject = null;
 			try {
 				InputStream in = new java.net.URL(urldisplay).openStream();
-				mIcon11 = BitmapFactory.decodeStream(in);
+				fetchobject = BitmapFactory.decodeStream(in);
 			} catch (Exception e) {
 				Log.e("Error", e.getMessage());
 				e.printStackTrace();
 			}
-			return mIcon11;
+			return fetchobject;
 		}
 
 		protected void onPostExecute(Bitmap result) {
-			bmImage.setImageBitmap(result);
+			fetchImage.setImageBitmap(result);
 		}
 
 	}
