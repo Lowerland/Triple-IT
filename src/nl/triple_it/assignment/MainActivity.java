@@ -45,9 +45,8 @@ public class MainActivity extends Activity {
 		employeeList3 = new ArrayList<Employees>(); // windows
 
 		// TODO
-		// new
-		// EmployeeAsyncTask().execute("http://nmouthaan.triple-it.nl/assignment/api.php");
-		new EmployeeAsyncTask().execute("http://westfrieslandwifi.nl/tripletest/index.html");
+		// new EmployeeAsyncTask().execute("http://nmouthaan.triple-it.nl/assignment/api.php");
+		new EmployeeAsyncTask().execute("http://www.westfrieslandwifi.nl/tripletest/index.html");
 
 		// android
 		ExpandableHeightGridView gridView = (ExpandableHeightGridView) findViewById(R.id.ANDROIDLIST);
@@ -112,7 +111,7 @@ public class MainActivity extends Activity {
 			dialog.setCancelable(false);
 		}
 
-		// Run in background thread
+		// Run a background thread
 		@Override
 		protected Boolean doInBackground(String... urls) {
 			try {
@@ -122,8 +121,8 @@ public class MainActivity extends Activity {
 				HttpGet httpget = new HttpGet(urls[0]);
 				HttpResponse response = httpclient.execute(httpget);
 
-				int status = response.getStatusLine().getStatusCode();
-				if (status == 200) {
+				//int status = response.getStatusLine().getStatusCode();
+				if (response.getStatusLine().getStatusCode() == 200) {
 					HttpEntity entity = response.getEntity();
 					String data = EntityUtils.toString(entity);
 
@@ -177,7 +176,6 @@ public class MainActivity extends Activity {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			// set return false if no data was fetched
 			return false;
 		}
 
