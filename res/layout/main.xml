@@ -38,7 +38,7 @@
             android:text="Android Developers"
             android:textColor="#111111" 
             android:textAppearance="?android:attr/textAppearanceSmall" />
-
+        
         <nl.triple_it.assignment.ExpandableHeightGridView
             android:id="@+id/ANDROIDLIST"
             android:layout_width="match_parent"
