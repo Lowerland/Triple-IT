@@ -26,14 +26,12 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 
 		ArrayListEmployees = objects;
 		Resource = resource;
-		vi = (LayoutInflater) context.
-				getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		// getting the first list item
 		ViewHolder holder;
 
 		if (convertView == null) {
@@ -52,18 +50,11 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 		// When no photo exist set a default one
 		if (ArrayListEmployees.get(position).getPhotourl() == "null") {
 			holder.imageview.setImageResource(R.drawable.no_photo);
-
 		} else {
-			// TODO
-			// new
-			// DownloadImageTask(holder.imageview).execute("http://nmouthaan.triple-it.nl/assignment/photos/"
-			// + ArrayListEmployees.get(position).getPhotourl());
-			new DownloadImageTask(holder.imageview).execute("http://www.westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl());
+			new DownloadImageTask(holder.imageview).execute("http://nmouthaan.triple-it.nl/assignment/photos/" + ArrayListEmployees.get(position).getPhotourl());
 		}
-		// Set name
 		holder.name.setText(ArrayListEmployees.get(position).getFirstname()	+ " " + ArrayListEmployees.get(position).getLastname());
 
-		// Set emailadress if we are in detail view
 		if (holder.emailaddress == null) {
 		} else {
 			holder.emailaddress.setText(ArrayListEmployees.get(position).getEmailaddress());
@@ -78,7 +69,7 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 	}
 
 	// Photo downloader
-	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+	public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 		ImageView fetchImage;
 
 		public DownloadImageTask(ImageView fetchImage) {

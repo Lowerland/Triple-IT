@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +24,8 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-//@SuppressLint("CutPasteId")
+import nl.triple_it.assignment.DetailsDialog;
+
 public class MainActivity extends Activity {
 
 	ExpandableHeightGridView androidlist;
@@ -31,35 +33,41 @@ public class MainActivity extends Activity {
 	ExpandableHeightGridView winlist;
 
 	EmployeeAdapter adapter;
-	ArrayList<Employees> employeeList; // android
-	ArrayList<Employees> employeeList2; // ios
-	ArrayList<Employees> employeeList3; // windows
+	ArrayList<Employees> androidList;
+	ArrayList<Employees> iosList;
+	ArrayList<Employees> windowsList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		employeeList = new ArrayList<Employees>(); // android
-		employeeList2 = new ArrayList<Employees>(); // ios
-		employeeList3 = new ArrayList<Employees>(); // windows
+		androidList = new ArrayList<Employees>();
+		iosList = new ArrayList<Employees>();
+		windowsList = new ArrayList<Employees>();
 
-		// TODO
-		// new EmployeeAsyncTask().execute("http://nmouthaan.triple-it.nl/assignment/api.php");
-		new EmployeeAsyncTask().execute("http://www.westfrieslandwifi.nl/tripletest/index.html");
+		new EmployeeAsyncTask().execute("http://nmouthaan.triple-it.nl/assignment/api.php");
 
 		// android
 		ExpandableHeightGridView gridView = (ExpandableHeightGridView) findViewById(R.id.ANDROIDLIST);
 		gridView.setAdapter(adapter);
 		gridView.setExpanded(true);
 
-		adapter = new EmployeeAdapter(getApplicationContext(), R.layout.row, employeeList);
+		adapter = new EmployeeAdapter(getApplicationContext(), R.layout.row, androidList);
 
 		gridView.setAdapter(adapter);
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 
+				Intent intent = new Intent(getApplicationContext(), DetailsDialog.class);
+
+				intent.putExtra("key_firstname", androidList.get(position).getFirstname());
+				intent.putExtra("key_lastname", androidList.get(position).getLastname());
+				intent.putExtra("key_emailaddress", androidList.get(position).getEmailaddress());
+				intent.putExtra("key_photourl", androidList.get(position).getPhotourl());
+				intent.putExtra("key_platform", "Android");
+				startActivity(intent);
 			}
 		});
 
@@ -68,14 +76,20 @@ public class MainActivity extends Activity {
 		gridView2.setAdapter(adapter);
 		gridView2.setExpanded(true);
 
-		adapter = new EmployeeAdapter(getApplicationContext(), R.layout.row, employeeList2);
-
+		adapter = new EmployeeAdapter(getApplicationContext(), R.layout.row, iosList);
 		gridView2.setAdapter(adapter);
 
 		gridView2.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+				Intent intent = new Intent(getApplicationContext(), DetailsDialog.class);
 
+				intent.putExtra("key_firstname", iosList.get(position).getFirstname());
+				intent.putExtra("key_lastname", iosList.get(position).getLastname());
+				intent.putExtra("key_emailaddress", iosList.get(position).getEmailaddress());
+				intent.putExtra("key_photourl", iosList.get(position).getPhotourl());
+				intent.putExtra("key_platform", "iOS");
+				startActivity(intent);
 			}
 		});
 
@@ -84,14 +98,20 @@ public class MainActivity extends Activity {
 		gridView3.setAdapter(adapter);
 		gridView3.setExpanded(true);
 
-		adapter = new EmployeeAdapter(getApplicationContext(), R.layout.row, employeeList3);
-
+		adapter = new EmployeeAdapter(getApplicationContext(), R.layout.row, windowsList);
 		gridView3.setAdapter(adapter);
 
 		gridView3.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+				Intent intent = new Intent(getApplicationContext(), DetailsDialog.class);
 
+				intent.putExtra("key_firstname", windowsList.get(position).getFirstname());
+				intent.putExtra("key_lastname", windowsList.get(position).getLastname());
+				intent.putExtra("key_emailaddress", windowsList.get(position).getEmailaddress());
+				intent.putExtra("key_photourl", windowsList.get(position).getPhotourl());
+				intent.putExtra("key_platform", "Windows");
+				startActivity(intent);
 			}
 		});
 
@@ -121,8 +141,8 @@ public class MainActivity extends Activity {
 				HttpGet httpget = new HttpGet(urls[0]);
 				HttpResponse response = httpclient.execute(httpget);
 
-				//int status = response.getStatusLine().getStatusCode();
 				if (response.getStatusLine().getStatusCode() == 200) {
+
 					HttpEntity entity = response.getEntity();
 					String data = EntityUtils.toString(entity);
 
@@ -141,31 +161,37 @@ public class MainActivity extends Activity {
 					for (int i = 0; i < jArray.length(); i++) {
 						JSONObject jRealObject = jArray.getJSONObject(i);
 						Employees employee = new Employees();
+
 						employee.setFirstname(jRealObject.getString("firstName"));
 						employee.setLastname(jRealObject.getString("lastName"));
 						employee.setEmailaddress(jRealObject.getString("emailAddress"));
 						employee.setPhotourl(jRealObject.getString("photoUrl"));
-						employeeList.add(employee);
+
+						androidList.add(employee);
 					}
 					// iOS objects
 					for (int i = 0; i < jArray2.length(); i++) {
 						JSONObject jRealObject = jArray2.getJSONObject(i);
+
 						Employees employee = new Employees();
 						employee.setFirstname(jRealObject.getString("firstName"));
 						employee.setLastname(jRealObject.getString("lastName"));
 						employee.setEmailaddress(jRealObject.getString("emailAddress"));
 						employee.setPhotourl(jRealObject.getString("photoUrl"));
-						employeeList2.add(employee);
+
+						iosList.add(employee);
 					}
 					// Windows objects
 					for (int i = 0; i < jArray3.length(); i++) {
 						JSONObject jRealObject = jArray3.getJSONObject(i);
+
 						Employees employee = new Employees();
 						employee.setFirstname(jRealObject.getString("firstName"));
 						employee.setLastname(jRealObject.getString("lastName"));
 						employee.setEmailaddress(jRealObject.getString("emailAddress"));
 						employee.setPhotourl(jRealObject.getString("photoUrl"));
-						employeeList3.add(employee);
+
+						windowsList.add(employee);
 					}
 					return true;
 				}
@@ -188,9 +214,7 @@ public class MainActivity extends Activity {
 
 			if (result == false) {
 				Toast.makeText(getApplicationContext(), "Unable to fetch data from server", Toast.LENGTH_LONG).show();
-
 			}
 		}
 	}
-
 }

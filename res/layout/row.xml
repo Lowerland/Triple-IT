@@ -13,6 +13,7 @@
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/photo"
         android:background="@drawable/border"
+        android:layout_marginTop="4dp"
         android:src="@drawable/no_photo" />
 
     <TextView

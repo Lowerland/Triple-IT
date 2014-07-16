@@ -13,32 +13,34 @@
             android:id="@+id/head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/head" />
-<!-- Android -->
+        <!-- Android -->
+
         <ImageView
             android:id="@+id/androidLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/head"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/android" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/head"
-            android:layout_toRightOf="@id/androidLogo"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
-            android:text="Android Developers"
-            android:textColor="#111111" 
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@id/androidLogo"
+            android:text="@string/android_dev"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#111111" />
+
         <nl.triple_it.assignment.ExpandableHeightGridView
             android:id="@+id/ANDROIDLIST"
             android:layout_width="match_parent"
@@ -47,27 +49,29 @@
             android:layout_marginTop="4dp"
             android:numColumns="2"
             tools:listitem="@layout/row" />
-<!-- iOS -->
+        <!-- iOS -->
+
         <ImageView
             android:id="@+id/iosLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/ANDROIDLIST"
-            android:layout_marginTop="18dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="18dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ios" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/ANDROIDLIST"
-            android:layout_toRightOf="@id/iosLogo"
-            android:layout_marginTop="18dp"
             android:layout_marginLeft="8dp"
-            android:text="iOS Developers"
-            android:textColor="#111111" 
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        
+            android:layout_marginTop="18dp"
+            android:layout_toRightOf="@id/iosLogo"
+            android:text="@string/ios_dev"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#111111" />
+
         <nl.triple_it.assignment.ExpandableHeightGridView
             android:id="@+id/IOSLIST"
             android:layout_width="match_parent"
@@ -76,27 +80,29 @@
             android:layout_marginTop="16dp"
             android:numColumns="2"
             tools:listitem="@layout/row" />
-<!-- Windows -->
-		<ImageView
+        <!-- Windows -->
+
+        <ImageView
             android:id="@+id/windowsLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/IOSLIST"
-            android:layout_marginTop="18dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="18dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/win" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/IOSLIST"
-            android:layout_toRightOf="@id/windowsLogo"
-            android:layout_marginTop="18dp"
             android:layout_marginLeft="8dp"
-            android:text="Windows Developers"
-            android:textColor="#111111" 
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-        
+            android:layout_marginTop="18dp"
+            android:layout_toRightOf="@id/windowsLogo"
+            android:text="@string/windows_dev"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#111111" />
+
         <nl.triple_it.assignment.ExpandableHeightGridView
             android:id="@+id/WINLIST"
             android:layout_width="match_parent"
