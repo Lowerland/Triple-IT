@@ -10,14 +10,6 @@ public class Employees {
 	public Employees() {
 	}
 
-	public Employees(String firstname, String lastname, String emailaddress, String photourl) {
-		super();
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.emailaddress = emailaddress;
-		this.photourl = photourl;
-	}
-
 	public String getFirstname() {
 		return firstname;
 	}

@@ -1,19 +1,14 @@
 package nl.triple_it.assignment;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class EmployeeAdapter extends ArrayAdapter<Employees> {
 
@@ -48,51 +43,24 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 		}
 
 		// When no photo exist set a default one
-		if (ArrayListEmployees.get(position).getPhotourl() == "null") {
+		if (ArrayListEmployees.get(position).getPhotourl().equals("null")) {
 			holder.imageview.setImageResource(R.drawable.no_photo);
 		} else {
-			new DownloadImageTask(holder.imageview).execute("http://nmouthaan.triple-it.nl/assignment/photos/" + ArrayListEmployees.get(position).getPhotourl());
+			// new ImageDownloader(holder.imageview).execute("http://nmouthaan.triple-it.nl/assignment/photos/" + ArrayListEmployees.get(position).getPhotourl());
+			new ImageDownloader(holder.imageview).execute("http://android.json.test/photos/" + ArrayListEmployees.get(position).getPhotourl());
+
 		}
 		holder.name.setText(ArrayListEmployees.get(position).getFirstname()	+ " " + ArrayListEmployees.get(position).getLastname());
 
-		if (holder.emailaddress == null) {
-		} else {
+		if (holder.emailaddress != null) {
 			holder.emailaddress.setText(ArrayListEmployees.get(position).getEmailaddress());
 		}
 		return convertView;
 	}
 
-	static class ViewHolder {
+	public static class ViewHolder {
 		public ImageView imageview;
 		public TextView name;
 		public TextView emailaddress;
 	}
-
-	// Photo downloader
-	public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-		ImageView fetchImage;
-
-		public DownloadImageTask(ImageView fetchImage) {
-			this.fetchImage = fetchImage;
-		}
-
-		protected Bitmap doInBackground(String... urls) {
-			String urldisplay = urls[0];
-			Bitmap fetchobject = null;
-			try {
-				InputStream in = new java.net.URL(urldisplay).openStream();
-				fetchobject = BitmapFactory.decodeStream(in);
-			} catch (Exception e) {
-				Log.e("Error", e.getMessage());
-				e.printStackTrace();
-			}
-			return fetchobject;
-		}
-
-		protected void onPostExecute(Bitmap result) {
-			fetchImage.setImageBitmap(result);
-		}
-
-	}
-
 }

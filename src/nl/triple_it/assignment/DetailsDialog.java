@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 public class DetailsDialog extends Activity {
 
-	private Button button_ok;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -25,21 +23,25 @@ public class DetailsDialog extends Activity {
 		String platform = getString(R.string.platform) + " " + intent.getStringExtra("key_platform");
 
 		String name = intent.getStringExtra("key_firstname") + " " + intent.getStringExtra("key_lastname");
+		String photourl = intent.getStringExtra("key_photourl");
 
 		ImageView Vphoto = (ImageView) findViewById(R.id.photo);
-		Vphoto.setImageResource(R.drawable.no_photo);
-
 		TextView Vname = (TextView) findViewById(R.id.name);
-		Vname.setText(name);
-
 		TextView Vplatform = (TextView) findViewById(R.id.platform);
-		Vplatform.setText(platform);
-
 		TextView Vmailaddress = (TextView) findViewById(R.id.emailaddress);
-		Vmailaddress.setText(emailaddress);
+		Button button_ok = (Button) findViewById(R.id.btn_dialog_ok);
 
-		button_ok = (Button) findViewById(R.id.btn_dialog_ok);
+		if (photourl.equals("null")) {
+			Vphoto.setImageResource(R.drawable.no_photo);
+		} else {
+			new ImageDownloader(Vphoto).execute("http://android.json.test/photos/" + photourl);
+		}
+
+		Vname.setText(name);
+		Vplatform.setText(platform);
+		Vmailaddress.setText(emailaddress);
 		button_ok.setOnClickListener(btnDialogListener);
+
 	}
 
 	private OnClickListener btnDialogListener = new OnClickListener() {
@@ -47,5 +49,4 @@ public class DetailsDialog extends Activity {
 			finish();
 		}
 	};
-
 }
