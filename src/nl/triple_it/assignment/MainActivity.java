@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		new EmployeeAsyncTask().execute("http://android.json.test");
+		new EmployeeAsyncTask().execute("http://westfrieslandwifi.nl/tripletest/index.html");
 		// new
 		// EmployeeAsyncTask().execute("http://nmouthaan.triple-it.nl/assignment/api.php");
 

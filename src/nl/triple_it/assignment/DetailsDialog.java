@@ -34,7 +34,7 @@ public class DetailsDialog extends Activity {
 		if (photourl.equals("null")) {
 			Vphoto.setImageResource(R.drawable.no_photo);
 		} else {
-			new ImageDownloader(Vphoto).execute("http://android.json.test/photos/" + photourl);
+			new ImageDownloader(Vphoto).execute("http://westfrieslandwifi.nl/tripletest/photos/" + photourl);
 		}
 
 		Vname.setText(name);

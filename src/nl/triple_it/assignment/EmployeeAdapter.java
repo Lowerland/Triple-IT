@@ -47,7 +47,7 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 			holder.imageview.setImageResource(R.drawable.no_photo);
 		} else {
 			// new ImageDownloader(holder.imageview).execute("http://nmouthaan.triple-it.nl/assignment/photos/" + ArrayListEmployees.get(position).getPhotourl());
-			new ImageDownloader(holder.imageview).execute("http://android.json.test/photos/" + ArrayListEmployees.get(position).getPhotourl());
+			new ImageDownloader(holder.imageview).execute("http://westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl());
 
 		}
 		holder.name.setText(ArrayListEmployees.get(position).getFirstname()	+ " " + ArrayListEmployees.get(position).getLastname());
