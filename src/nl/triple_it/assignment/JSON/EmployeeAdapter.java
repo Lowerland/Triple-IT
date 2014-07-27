@@ -1,4 +1,4 @@
-package nl.triple_it.assignment;
+package nl.triple_it.assignment.JSON;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,15 +10,20 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import nl.triple_it.assignment.R;
+import nl.triple_it.assignment.imageUtils.ImageLoader;
+
 public class EmployeeAdapter extends ArrayAdapter<Employees> {
 
 	ArrayList<Employees> ArrayListEmployees;
 	int Resource;
 	LayoutInflater vi;
-
+	private ImageLoader imgLoader;
+	//private String strURL = "http://westfrieslandwifi.nl/tripletest/photos/FrankLippes.png";
+	
 	public EmployeeAdapter(Context context, int resource, ArrayList<Employees> objects) {
 		super(context, resource, objects);
-
+		imgLoader = new ImageLoader(context);
 		ArrayListEmployees = objects;
 		Resource = resource;
 		vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -28,7 +33,8 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		ViewHolder holder;
-
+		
+		
 		if (convertView == null) {
 			convertView = vi.inflate(Resource, null);
 
@@ -43,12 +49,13 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 		}
 
 		// When no photo exist set a default one
-		if (ArrayListEmployees.get(position).getPhotourl().equals("null")) {
+		if (ArrayListEmployees.get(position).getPhotourl() == "null") {
 			holder.imageview.setImageResource(R.drawable.no_photo);
 		} else {
 			// new ImageDownloader(holder.imageview).execute("http://nmouthaan.triple-it.nl/assignment/photos/" + ArrayListEmployees.get(position).getPhotourl());
-			new ImageDownloader(holder.imageview).execute("http://westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl());
-
+			//new ImageDownloader(holder.imageview).execute("http://westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl());
+			String photoURL = "http://westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl();
+			imgLoader.DisplayImage(photoURL, holder.imageview);
 		}
 		holder.name.setText(ArrayListEmployees.get(position).getFirstname()	+ " " + ArrayListEmployees.get(position).getLastname());
 
@@ -58,7 +65,7 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 		return convertView;
 	}
 
-	public static class ViewHolder {
+	public class ViewHolder {
 		public ImageView imageview;
 		public TextView name;
 		public TextView emailaddress;

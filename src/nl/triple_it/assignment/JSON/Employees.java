@@ -1,4 +1,4 @@
-package nl.triple_it.assignment;
+package nl.triple_it.assignment.JSON;
 
 public class Employees {
 
@@ -8,6 +8,16 @@ public class Employees {
 	private String photourl;
 
 	public Employees() {
+	}
+
+	public Employees(String firstname, String lastname, String emailaddress, String photourl) {
+		super();
+
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.emailaddress = emailaddress;
+		this.photourl = photourl;
+
 	}
 
 	public String getFirstname() {

@@ -41,7 +41,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#111111" />
 
-        <nl.triple_it.assignment.ExpandableHeightGridView
+        <nl.triple_it.assignment.imageUtils.ExpandableHeightGridView
             android:id="@+id/ANDROIDLIST"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -72,7 +72,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#111111" />
 
-        <nl.triple_it.assignment.ExpandableHeightGridView
+        <nl.triple_it.assignment.imageUtils.ExpandableHeightGridView
             android:id="@+id/IOSLIST"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -103,7 +103,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="#111111" />
 
-        <nl.triple_it.assignment.ExpandableHeightGridView
+        <nl.triple_it.assignment.imageUtils.ExpandableHeightGridView
             android:id="@+id/WINLIST"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

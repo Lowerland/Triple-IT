@@ -1,5 +1,6 @@
 package nl.triple_it.assignment;
 
+import nl.triple_it.assignment.imageUtils.ImageLoader;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,17 +13,30 @@ import android.widget.TextView;
 
 public class DetailsDialog extends Activity {
 
+	// private ImageView imgView;
+	// private ImageLoader imgLoader;
+	// private String strURL = "http://westfrieslandwifi.nl/tripletest/photos/FrankLippes.png";
+	// imgView = (ImageView) findViewById(R.id.imageView1);
+	// imgLoader = new ImageLoader(this);
+	// imgLoader.DisplayImage(strURL, imgView);
+
+	private ImageLoader imgLoader;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.detail_dialog);
 
+		imgLoader = new ImageLoader(this);
+
 		Intent intent = getIntent();
 		String emailaddress = intent.getStringExtra("key_emailaddress");
-		String platform = getString(R.string.platform) + " " + intent.getStringExtra("key_platform");
+		String platform = getString(R.string.platform) + " "
+				+ intent.getStringExtra("key_platform");
 
-		String name = intent.getStringExtra("key_firstname") + " " + intent.getStringExtra("key_lastname");
+		String name = intent.getStringExtra("key_firstname") + " "
+				+ intent.getStringExtra("key_lastname");
 		String photourl = intent.getStringExtra("key_photourl");
 
 		ImageView Vphoto = (ImageView) findViewById(R.id.photo);
@@ -34,7 +48,12 @@ public class DetailsDialog extends Activity {
 		if (photourl.equals("null")) {
 			Vphoto.setImageResource(R.drawable.no_photo);
 		} else {
-			new ImageDownloader(Vphoto).execute("http://westfrieslandwifi.nl/tripletest/photos/" + photourl);
+			String photoURL = "http://westfrieslandwifi.nl/tripletest/photos/"
+					+ photourl;
+			imgLoader.DisplayImage(photoURL, Vphoto);
+			// new
+			// ImageDownloader(Vphoto).execute("http://westfrieslandwifi.nl/tripletest/photos/"
+			// + photourl);
 		}
 
 		Vname.setText(name);

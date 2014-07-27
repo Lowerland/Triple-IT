@@ -4,4 +4,6 @@ doc
 ant.properties
 local.properties
 .idea
+.settings
+lint.xml
 out
