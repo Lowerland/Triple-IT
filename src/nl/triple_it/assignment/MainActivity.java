@@ -2,7 +2,10 @@ package nl.triple_it.assignment;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -19,10 +22,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreProtocolPNames;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -32,76 +39,107 @@ public class MainActivity extends Activity {
 	EmployeeAdapter adapter2;
 	EmployeeAdapter adapter3;
 
-	private ArrayList<Employees> androidList = new ArrayList<Employees>();
-	private ArrayList<Employees> iosList = new ArrayList<Employees>();
-	private ArrayList<Employees> windowsList = new ArrayList<Employees>();
-
 	ExpandableHeightGridView gridView;
 	ExpandableHeightGridView gridView2;
 	ExpandableHeightGridView gridView3;
 
+	private ArrayList<Employees> androidList = new ArrayList<Employees>();
+	private ArrayList<Employees> iosList = new ArrayList<Employees>();
+	private ArrayList<Employees> windowsList = new ArrayList<Employees>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// start tracing to "/sdcard/calc.trace"
-		// Debug.startMethodTracing("onCreate2");
-
 		setContentView(R.layout.main);
-		gridView = (ExpandableHeightGridView) findViewById(R.id.ANDROIDLIST);
 
+		gridView = (ExpandableHeightGridView) findViewById(R.id.ANDROIDLIST);
 		gridView2 = (ExpandableHeightGridView) findViewById(R.id.IOSLIST);
 		gridView3 = (ExpandableHeightGridView) findViewById(R.id.WINLIST);
 
-		// new EmployeeAsyncTask().execute("http://android.json.test/");
 		new EmployeeAsyncTask().execute("http://westfrieslandwifi.nl/tripletest/");
-
-		Inflatorrrr();
 		// new
 		// EmployeeAsyncTask().execute("http://nmouthaan.triple-it.nl/assignment/api.php");
 
+		InflateGridViews();
 	}
 
+	/**
+	 * AsyncTask JSON parsing
+	 */
 	public class EmployeeAsyncTask extends AsyncTask<String, Void, Boolean> {
-
 		ProgressDialog dialog;
 
-		// Run a background thread
 		@Override
 		protected Boolean doInBackground(String... urls) {
+			ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-			// ConnectivityManager cm = (ConnectivityManager)
-			// getSystemService(Context.CONNECTIVITY_SERVICE);
-			// NetworkInfo netInfo = cm.getActiveNetworkInfo();
-			// Log.d(TAG, "cm.getActiveNetworkInfo() " +
-			// cm.getActiveNetworkInfo());
-			// if (netInfo != null && netInfo.isConnected()) {
-			// Log.d(TAG, "netInfo.isConnected() " + netInfo.isConnected());
-			try {
-				// JSON Get data
-				// DefaultHttpClient httpclient = new DefaultHttpClient();
-				// httpclient.getParams().setParameter(CoreProtocolPNames.USER_AGENT,
-				// System.getProperty("http.agent"));
-				// HttpGet httpget = new HttpGet(urls[0]);
-				// HttpResponse response = httpclient.execute(httpget);
+			/**
+			 * String JSON_content Will hold our Online or Offline JSON data And
+			 * will be used for JSON Parsing
+			 */
+			String JSON_content = null;
 
-				HttpClient client = new DefaultHttpClient();
-				// httpclient.getParams().setParameter(CoreProtocolPNames.USER_AGENT,
-				// System.getProperty("http.agent"));
-				HttpGet get = new HttpGet(urls[0]);
-				// HttpResponse response = httpclient.execute(httpget);
-				String content = client.execute(get, new BasicResponseHandler());
+			/**
+			 * Fetch JSON (Online) else from cache (Offline)
+			 */
+			if (netInfo != null && netInfo.isConnected()) {
+				try {
+					HttpClient client = new DefaultHttpClient();
+					client.getParams().setParameter(CoreProtocolPNames.USER_AGENT, System.getProperty("http.agent"));
+					HttpGet httpget = new HttpGet(urls[0]);
 
-				if (client != null) {
-					// HttpEntity entity = response.getEntity();
-					// String data = EntityUtils.toString(entity);
+					String string = client.execute(httpget, new BasicResponseHandler());
+					if (string != null) {
+						JSON_content = string;
 
-					// JSONObject jObj = new JSONObject(data);
-					JSONObject jObj = new JSONObject(content);
-					// Get our Android Array
+						// Cache JSON
+						FileOutputStream outputStream;
+						try {
+							outputStream = openFileOutput("JSON.Cache", Context.MODE_PRIVATE);
+							outputStream.write(JSON_content.getBytes());
+							outputStream.close();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				/**
+				 * JSON from cache
+				 */
+				try {
+					FileInputStream mInput = openFileInput("JSON.Cache");
+					byte[] cached_json = new byte[mInput.available()];
+					mInput.read(cached_json);
+					mInput.close();
+					JSON_content = new String(cached_json);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			/**
+			 * JSON PARSER
+			 */
+			if (JSON_content != null) {
+				try {
+					JSONObject jObj;
+					jObj = new JSONObject(JSON_content);
+
+					// Get Android Array
 					JSONArray jArray = jObj.getJSONArray("Android");
-					// Get our iOS Array
+
+					// Get iOS Array
 					JSONArray jArray2 = jObj.getJSONArray("iOS");
-					// Get our Windows Array
+
+					// Get Windows Array
 					JSONArray jArray3 = jObj.getJSONArray("Windows");
 
 					// Android objects
@@ -135,19 +173,12 @@ public class MainActivity extends Activity {
 						employee.setEmailaddress(jRealObject.getString("emailAddress"));
 						employee.setPhotourl(jRealObject.getString("photoUrl"));
 						windowsList.add(employee);
-
 					}
-
-					return true;
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
+				return true;
 			}
-			// }
 			return false;
 		}
 
@@ -170,6 +201,10 @@ public class MainActivity extends Activity {
 
 			dialog.cancel();
 
+			/*
+			 * The toast should only appear if the app runs without internet and
+			 * without cache
+			 */
 			if (!result) {
 				Toast.makeText(getApplicationContext(), getString(R.string.connection_error_msg), Toast.LENGTH_LONG).show();
 			}
@@ -177,22 +212,16 @@ public class MainActivity extends Activity {
 
 	}
 
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-		// Inflatorrrr();
-	}
+	/**
+	 * Inflates all our GridViews with the data from our adapters
+	 */
+	public void InflateGridViews() {
 
-	public void Inflatorrrr() {
 		// android
-
-		// gridView.setAdapter(adapter);
-		// gridView.setExpanded(true);
 		adapter = new EmployeeAdapter(this, R.layout.row, androidList);
 		gridView.setAdapter(adapter);
-		// gridView.setExpanded(true);
 		gridView.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				Intent intent = new Intent(getApplicationContext(), DetailsDialog.class);
@@ -206,14 +235,10 @@ public class MainActivity extends Activity {
 		});
 
 		// ios
-
-		/*
-		 * gridView2.setAdapter(adapter2); gridView2.setExpanded(true);
-		 */
 		adapter2 = new EmployeeAdapter(this, R.layout.row, iosList);
 		gridView2.setAdapter(adapter2);
-
 		gridView2.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				Intent intent = new Intent(getApplicationContext(), DetailsDialog.class);
@@ -227,14 +252,10 @@ public class MainActivity extends Activity {
 		});
 
 		// windows
-
-		// gridView3.setAdapter(adapter3);
-		// gridView3.setExpanded(true);
-		//
 		adapter3 = new EmployeeAdapter(this, R.layout.row, windowsList);
 		gridView3.setAdapter(adapter3);
-
 		gridView3.setOnItemClickListener(new OnItemClickListener() {
+
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
 				Intent intent = new Intent(getApplicationContext(), DetailsDialog.class);
@@ -246,15 +267,5 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-
 	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		// stop tracing
-		// Debug.stopMethodTracing();
-	}
-
 }

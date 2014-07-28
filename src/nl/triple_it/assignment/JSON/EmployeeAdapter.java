@@ -19,8 +19,10 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 	int Resource;
 	LayoutInflater vi;
 	private ImageLoader imgLoader;
-	//private String strURL = "http://westfrieslandwifi.nl/tripletest/photos/FrankLippes.png";
-	
+
+	// private String strURL =
+	// "http://westfrieslandwifi.nl/tripletest/photos/FrankLippes.png";
+
 	public EmployeeAdapter(Context context, int resource, ArrayList<Employees> objects) {
 		super(context, resource, objects);
 		imgLoader = new ImageLoader(context);
@@ -33,8 +35,7 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		ViewHolder holder;
-		
-		
+
 		if (convertView == null) {
 			convertView = vi.inflate(Resource, null);
 
@@ -52,12 +53,18 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 		if (ArrayListEmployees.get(position).getPhotourl() == "null") {
 			holder.imageview.setImageResource(R.drawable.no_photo);
 		} else {
-			// new ImageDownloader(holder.imageview).execute("http://nmouthaan.triple-it.nl/assignment/photos/" + ArrayListEmployees.get(position).getPhotourl());
-			//new ImageDownloader(holder.imageview).execute("http://westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl());
-			String photoURL = "http://westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl();
+			// new
+			// ImageDownloader(holder.imageview).execute("http://nmouthaan.triple-it.nl/assignment/photos/"
+			// + ArrayListEmployees.get(position).getPhotourl());
+			// new
+			// ImageDownloader(holder.imageview).execute("http://westfrieslandwifi.nl/tripletest/photos/"
+			// + ArrayListEmployees.get(position).getPhotourl());
+			String photoURL = "http://westfrieslandwifi.nl/tripletest/photos/"
+					+ ArrayListEmployees.get(position).getPhotourl();
 			imgLoader.DisplayImage(photoURL, holder.imageview);
 		}
-		holder.name.setText(ArrayListEmployees.get(position).getFirstname()	+ " " + ArrayListEmployees.get(position).getLastname());
+		holder.name.setText(ArrayListEmployees.get(position).getFirstname()
+				+ " " + ArrayListEmployees.get(position).getLastname());
 
 		if (holder.emailaddress != null) {
 			holder.emailaddress.setText(ArrayListEmployees.get(position).getEmailaddress());

@@ -15,7 +15,8 @@ public class DetailsDialog extends Activity {
 
 	// private ImageView imgView;
 	// private ImageLoader imgLoader;
-	// private String strURL = "http://westfrieslandwifi.nl/tripletest/photos/FrankLippes.png";
+	// private String strURL =
+	// "http://westfrieslandwifi.nl/tripletest/photos/FrankLippes.png";
 	// imgView = (ImageView) findViewById(R.id.imageView1);
 	// imgLoader = new ImageLoader(this);
 	// imgLoader.DisplayImage(strURL, imgView);
