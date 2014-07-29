@@ -13,14 +13,6 @@ import android.widget.TextView;
 
 public class DetailsDialog extends Activity {
 
-	// private ImageView imgView;
-	// private ImageLoader imgLoader;
-	// private String strURL =
-	// "http://westfrieslandwifi.nl/tripletest/photos/FrankLippes.png";
-	// imgView = (ImageView) findViewById(R.id.imageView1);
-	// imgLoader = new ImageLoader(this);
-	// imgLoader.DisplayImage(strURL, imgView);
-
 	private ImageLoader imgLoader;
 
 	@Override
@@ -32,34 +24,31 @@ public class DetailsDialog extends Activity {
 		imgLoader = new ImageLoader(this);
 
 		Intent intent = getIntent();
+		
 		String emailaddress = intent.getStringExtra("key_emailaddress");
-		String platform = getString(R.string.platform) + " "
-				+ intent.getStringExtra("key_platform");
-
-		String name = intent.getStringExtra("key_firstname") + " "
-				+ intent.getStringExtra("key_lastname");
+		String platform = getString(R.string.platform) + " " + intent.getStringExtra("key_platform");
+		String name = intent.getStringExtra("key_firstname") + " " + intent.getStringExtra("key_lastname");
 		String photourl = intent.getStringExtra("key_photourl");
 
 		ImageView Vphoto = (ImageView) findViewById(R.id.photo);
+		
 		TextView Vname = (TextView) findViewById(R.id.name);
 		TextView Vplatform = (TextView) findViewById(R.id.platform);
 		TextView Vmailaddress = (TextView) findViewById(R.id.emailaddress);
+		
 		Button button_ok = (Button) findViewById(R.id.btn_dialog_ok);
 
 		if (photourl.equals("null")) {
 			Vphoto.setImageResource(R.drawable.no_photo);
 		} else {
-			String photoURL = "http://westfrieslandwifi.nl/tripletest/photos/"
-					+ photourl;
+			String photoURL = "http://nmouthaan.triple-it.nl/assignment/photos/" + photourl;
 			imgLoader.DisplayImage(photoURL, Vphoto);
-			// new
-			// ImageDownloader(Vphoto).execute("http://westfrieslandwifi.nl/tripletest/photos/"
-			// + photourl);
 		}
 
 		Vname.setText(name);
 		Vplatform.setText(platform);
 		Vmailaddress.setText(emailaddress);
+		
 		button_ok.setOnClickListener(btnDialogListener);
 
 	}

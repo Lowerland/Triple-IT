@@ -56,9 +56,7 @@ public class MainActivity extends Activity {
 		gridView2 = (ExpandableHeightGridView) findViewById(R.id.IOSLIST);
 		gridView3 = (ExpandableHeightGridView) findViewById(R.id.WINLIST);
 
-		new EmployeeAsyncTask().execute("http://westfrieslandwifi.nl/tripletest/");
-		// new
-		// EmployeeAsyncTask().execute("http://nmouthaan.triple-it.nl/assignment/api.php");
+		new JSONAsyncTask().execute("http://nmouthaan.triple-it.nl/assignment/api.php");
 
 		InflateGridViews();
 	}
@@ -66,7 +64,7 @@ public class MainActivity extends Activity {
 	/**
 	 * AsyncTask JSON parsing
 	 */
-	public class EmployeeAsyncTask extends AsyncTask<String, Void, Boolean> {
+	public class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 		ProgressDialog dialog;
 
 		@Override
@@ -75,7 +73,7 @@ public class MainActivity extends Activity {
 			NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
 			/**
-			 * String JSON_content Will hold our Online or Offline JSON data And
+			 * String JSON_content will hold our Online or Offline JSON data And
 			 * will be used for JSON Parsing
 			 */
 			String JSON_content = null;
@@ -201,7 +199,7 @@ public class MainActivity extends Activity {
 
 			dialog.cancel();
 
-			/*
+			/**
 			 * The toast should only appear if the app runs without internet and
 			 * without cache
 			 */

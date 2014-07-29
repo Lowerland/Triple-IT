@@ -11,12 +11,10 @@ import android.util.Log;
 public class MemoryCache {
 
 	private static final String TAG = "MemoryCache";
-	private Map<String, Bitmap> cache = Collections.synchronizedMap(new LinkedHashMap<String, Bitmap>(10, 1.5f, true));// Last
-																														// argument
-																														// true
-																														// for
-																														// LRU
-																														// ordering
+	/** 
+	 * Last argument true for LRU ordering
+	 */
+	private Map<String, Bitmap> cache = Collections.synchronizedMap(new LinkedHashMap<String, Bitmap>(10, 1.5f, true));
 	private long size = 0;// current allocated size
 	private long limit = 1000000;// max memory in bytes (1000 kilobytes)
 
@@ -34,7 +32,7 @@ public class MemoryCache {
 		try {
 			if (!cache.containsKey(id))
 				return null;
-			// NullPointerException sometimes happen here
+			// NullPointerException sometimes can happen here
 			// http://code.google.com/p/osmdroid/issues/detail?id=78
 			return cache.get(id);
 		} catch (NullPointerException ex) {
@@ -58,16 +56,10 @@ public class MemoryCache {
 	private void checkSize() {
 		Log.i(TAG, "cache size=" + size + " length=" + cache.size());
 		if (size > limit) {
-			Iterator<Entry<String, Bitmap>> iter = cache.entrySet().iterator();// least
-																				// recently
-																				// accessed
-																				// item
-																				// will
-																				// be
-																				// the
-																				// first
-																				// one
-																				// iterated
+			/**
+			 * least recently accessed item will be the first one iterated
+			 */
+			Iterator<Entry<String, Bitmap>> iter = cache.entrySet().iterator();
 			while (iter.hasNext()) {
 				Entry<String, Bitmap> entry = iter.next();
 				size -= getSizeInBytes(entry.getValue());
@@ -81,7 +73,7 @@ public class MemoryCache {
 
 	public void clear() {
 		try {
-			// NullPointerException sometimes happen here
+			// NullPointerException sometimes can happen here
 			// http://code.google.com/p/osmdroid/issues/detail?id=78
 			cache.clear();
 			size = 0;

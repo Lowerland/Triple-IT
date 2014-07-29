@@ -8,11 +8,10 @@
     <string name="android_dev">Android Developers</string>
     <string name="ios_dev">iOS Developers</string>
     <string name="windows_dev">Windows Developers</string>
-    <string name="details">Details</string>
     <string name="platform">Platform:</string>
     <string name="btn_close">Close</string>
-    <string name="connecting">Connecting server</string>
+    <string name="connecting">Checking for updates</string>
     <string name="loading">Loading, please wait</string>
-    <string name="connection_error_msg">Unable to fetch data from server</string>
+    <string name="connection_error_msg">Make sure you are connected</string>
 
 </resources>

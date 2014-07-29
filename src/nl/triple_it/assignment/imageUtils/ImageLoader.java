@@ -90,8 +90,10 @@ public class ImageLoader {
 			o.inJustDecodeBounds = true;
 			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
 
-			// Find the correct scale value. It should be the power of 2.
-			/*
+			/**
+			 * Find the correct scale value. It should be the power of 2.
+			 * 
+			 * 
 			 * public int scale(inSampleSize)
 			 * 
 			 * If set to a value > 1, requests the decoder to subsample the
