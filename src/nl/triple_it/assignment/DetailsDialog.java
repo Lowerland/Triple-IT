@@ -41,7 +41,7 @@ public class DetailsDialog extends Activity {
 		if (photourl.equals("null")) {
 			Vphoto.setImageResource(R.drawable.no_photo);
 		} else {
-			String photoURL = "http://nmouthaan.triple-it.nl/assignment/photos/" + photourl;
+			String photoURL = "http://westfrieslandwifi.nl/tripletest/photos/" + photourl;
 			imgLoader.DisplayImage(photoURL, Vphoto);
 		}
 
