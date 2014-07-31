@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 		gridView2 = (ExpandableHeightGridView) findViewById(R.id.IOSLIST);
 		gridView3 = (ExpandableHeightGridView) findViewById(R.id.WINLIST);
 
-		new JSONAsyncTask().execute("http://nmouthaan.triple-it.nl/assignment/api.php");
+		new JSONAsyncTask().execute("http://westfrieslandwifi.nl/tripletest/");
 
 		InflateGridViews();
 	}
