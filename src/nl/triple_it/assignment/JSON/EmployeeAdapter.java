@@ -50,7 +50,7 @@ public class EmployeeAdapter extends ArrayAdapter<Employees> {
 		if (ArrayListEmployees.get(position).getPhotourl() == "null") {
 			holder.imageview.setImageResource(R.drawable.no_photo);
 		} else {
-			String photoURL = "http://nmouthaan.triple-it.nl/assignment/photos/" + ArrayListEmployees.get(position).getPhotourl();
+			String photoURL = "http://westfrieslandwifi.nl/tripletest/photos/" + ArrayListEmployees.get(position).getPhotourl();
 			imgLoader.DisplayImage(photoURL, holder.imageview);
 		}
 		holder.name.setText(ArrayListEmployees.get(position).getFirstname()	+ " " + ArrayListEmployees.get(position).getLastname());
